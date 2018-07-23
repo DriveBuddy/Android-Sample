@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                             DriveBuddyNotification notification = new DriveBuddyNotification("DriveBuddy",
                                     "DriveBuddy is working",
                                     R.drawable.ic_stat);
-                            DriveBuddyConfiguration config = new DriveBuddyConfiguration("07aa4cd40f1aa994555a5fcba1429e7b",
+                            DriveBuddyConfiguration config = new DriveBuddyConfiguration("**SDK Key**",
                                     username,
                                     automaticDriveRecognition,
                                     notification,
