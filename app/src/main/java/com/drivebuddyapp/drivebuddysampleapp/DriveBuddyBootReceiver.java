@@ -15,7 +15,7 @@ public class DriveBuddyBootReceiver extends BroadcastReceiver {
             final DriveBuddyOperationalCallback callback = new DriveBuddyOperationalCallback() {
                 @Override
                 public void onCompletion(boolean success, String message) {
-                    Toast.makeText(context, "DriveBuddy - Setup is successful.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "DriveBuddy - " + message, Toast.LENGTH_SHORT).show();
                 }
             };
             DriveBuddy.setup(context, DriveBuddy.getCurrentConfiguration(context), callback);

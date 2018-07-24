@@ -48,6 +48,46 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        final DriveBuddyOperationalCallback callbackForSetup = new DriveBuddyOperationalCallback() {
+            @Override
+            public void onCompletion(boolean success, String message) {
+                if (success) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                    alertDialog.setTitle("DriveBuddy");
+                    alertDialog.setMessage(message);
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                    usernameText.setVisibility(View.INVISIBLE);
+                    firstNameText.setVisibility(View.INVISIBLE);
+                    surnameText.setVisibility(View.INVISIBLE);
+                    mailText.setVisibility(View.INVISIBLE);
+                    automaticDrivingDetectionCheckbox.setVisibility(View.INVISIBLE);
+
+                    setupButton.setVisibility(View.INVISIBLE);
+                    resetButton.setVisibility(View.VISIBLE);
+                    if (!DriveBuddy.getCurrentConfiguration(MainActivity.this).getDrivingDetection()) {
+                        toggleButton.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                    alertDialog.setTitle("DriveBuddy");
+                    alertDialog.setMessage(message);
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                }
+            }
+        };
+
         // RESET BUTTON
 
         resetButton.setVisibility(View.INVISIBLE);
@@ -105,29 +145,17 @@ public class MainActivity extends AppCompatActivity {
                             String mail = mailText.getText().toString();
                             boolean automaticDriveRecognition = automaticDrivingDetectionCheckbox.isChecked();
 
-                            usernameText.setVisibility(View.INVISIBLE);
-                            firstNameText.setVisibility(View.INVISIBLE);
-                            surnameText.setVisibility(View.INVISIBLE);
-                            mailText.setVisibility(View.INVISIBLE);
-                            automaticDrivingDetectionCheckbox.setVisibility(View.INVISIBLE);
-
-                            setupButton.setVisibility(View.INVISIBLE);
-                            resetButton.setVisibility(View.VISIBLE);
-
                             DriveBuddyNotification notification = new DriveBuddyNotification("DriveBuddy",
                                     "DriveBuddy is working",
                                     R.drawable.ic_stat);
-                            DriveBuddyConfiguration config = new DriveBuddyConfiguration("**SDK Key**",
+                            DriveBuddyConfiguration config = new DriveBuddyConfiguration("***sdk-key***",
                                     username,
                                     automaticDriveRecognition,
                                     notification,
                                     firstName,
                                     surname,
                                     mail);
-                            DriveBuddy.setup(MainActivity.this, config, callback);
-                            if (!automaticDriveRecognition) {
-                                toggleButton.setVisibility(View.VISIBLE);
-                            }
+                            DriveBuddy.setup(MainActivity.this, config, callbackForSetup);
                         }
                     }
                 });
@@ -141,28 +169,13 @@ public class MainActivity extends AppCompatActivity {
 
             setupButton.setVisibility(View.INVISIBLE);
             resetButton.setVisibility(View.VISIBLE);
-            DriveBuddy.setup(MainActivity.this, DriveBuddy.getCurrentConfiguration(MainActivity.this), callback);
         }
 
         // LOCATION PERMISSION
 
-        int PERMISSION_ALL = 1;
-        String[] PERMISSIONS = {android.Manifest.permission.ACCESS_FINE_LOCATION};
-
-        if(!hasPermissions(PERMISSIONS)){
-            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+        if (ActivityCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
 
-    }
-
-    private boolean hasPermissions(String[] permissions) {
-        if (permissions != null) {
-            for (String permission : permissions) {
-                if (ActivityCompat.checkSelfPermission(MainActivity.this, permission) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 }
