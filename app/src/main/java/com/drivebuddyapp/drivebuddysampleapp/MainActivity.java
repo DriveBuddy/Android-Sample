@@ -17,8 +17,10 @@ import android.widget.ToggleButton;
 
 import com.drivebuddyapp.drivebuddysdk.DriveBuddy;
 import com.drivebuddyapp.drivebuddysdk.DriveBuddyConfiguration;
+import com.drivebuddyapp.drivebuddysdk.DriveBuddyError;
 import com.drivebuddyapp.drivebuddysdk.DriveBuddyNotification;
 import com.drivebuddyapp.drivebuddysdk.DriveBuddyOperationalCallback;
+import com.drivebuddyapp.drivebuddysdk.DriveBuddyTransitionReceiver;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,18 +45,18 @@ public class MainActivity extends AppCompatActivity {
 
         final DriveBuddyOperationalCallback callback = new DriveBuddyOperationalCallback() {
             @Override
-            public void onCompletion(boolean success, String message) {
-                Toast.makeText(MainActivity.this, "DriveBuddy - " + message, Toast.LENGTH_SHORT).show();
+            public void onCompletion(boolean success, int errorCode) {
+                Toast.makeText(MainActivity.this, "DriveBuddy - " + DriveBuddyError.getDefaultErrorMessage(errorCode), Toast.LENGTH_SHORT).show();
             }
         };
 
         final DriveBuddyOperationalCallback callbackForSetup = new DriveBuddyOperationalCallback() {
             @Override
-            public void onCompletion(boolean success, String message) {
+            public void onCompletion(boolean success, int errorCode) {
                 if (success) {
                     AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
                     alertDialog.setTitle("DriveBuddy");
-                    alertDialog.setMessage(message);
+                    alertDialog.setMessage(DriveBuddyError.getDefaultErrorMessage(errorCode));
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -76,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
                     alertDialog.setTitle("DriveBuddy");
-                    alertDialog.setMessage(message);
+                    alertDialog.setMessage(DriveBuddyError.getDefaultErrorMessage(errorCode));
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
