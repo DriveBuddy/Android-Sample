@@ -12,10 +12,12 @@ All you need to do is get your SDK key as mentioned above, and then add your SDK
 
 ```java
 DriveBuddyConfiguration config = new DriveBuddyConfiguration("***sdk-key***",  
-  username,  
-  automaticDriveRecognition,  
-  notification,  
-  firstName,  
-  surname,  
-  mail);
+                                                              username,  
+                                                              drivingDetection,  
+                                                              notification,  
+                                                              firstName,  
+                                                              surname,  
+                                                              mail);
 ```
+
+#### _For more information please visit [Android Docs](https://docs.drivebuddyapp.com/android/#introduction)._
