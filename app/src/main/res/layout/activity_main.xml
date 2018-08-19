@@ -84,7 +84,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.208"
-        app:layout_constraintStart_toEndOf="@+id/automaticDrivingDetectionCheckbox"
+        app:layout_constraintStart_toEndOf="@+id/drivingDetectionCheckbox"
         tools:text="Setup" />
 
     <ToggleButton
@@ -103,7 +103,7 @@
         app:layout_constraintVertical_bias="0.982" />
 
     <CheckBox
-        android:id="@+id/automaticDrivingDetectionCheckbox"
+        android:id="@+id/drivingDetectionCheckbox"
         android:layout_width="193dp"
         android:layout_height="42dp"
         android:layout_marginBottom="8dp"

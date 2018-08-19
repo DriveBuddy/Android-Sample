@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         final ToggleButton toggleButton = findViewById(R.id.toggleButton);
         final Button setupButton = findViewById(R.id.setupButton);
-        final CheckBox automaticDrivingDetectionCheckbox = findViewById(R.id.automaticDrivingDetectionCheckbox);
+        final CheckBox drivingDetectionCheckbox = findViewById(R.id.drivingDetectionCheckbox);
         final Button resetButton = findViewById(R.id.resetButton);
 
         // CALLBACKS
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                     firstNameText.setVisibility(View.INVISIBLE);
                     surnameText.setVisibility(View.INVISIBLE);
                     mailText.setVisibility(View.INVISIBLE);
-                    automaticDrivingDetectionCheckbox.setVisibility(View.INVISIBLE);
+                    drivingDetectionCheckbox.setVisibility(View.INVISIBLE);
 
                     setupButton.setVisibility(View.INVISIBLE);
                     resetButton.setVisibility(View.VISIBLE);
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
         // SETUP BUTTON
 
-        automaticDrivingDetectionCheckbox.setChecked(true); // Default: Automatic Drive Recognition is on
+        drivingDetectionCheckbox.setChecked(true); // Default: drivingDetection is on
         setupButton.setOnClickListener(
                 new View.OnClickListener() {
                     public void onClick(View view) {
@@ -145,14 +145,14 @@ public class MainActivity extends AppCompatActivity {
                             String firstName = firstNameText.getText().toString();
                             String surname = surnameText.getText().toString();
                             String mail = mailText.getText().toString();
-                            boolean automaticDriveRecognition = automaticDrivingDetectionCheckbox.isChecked();
+                            boolean drivingDetection = drivingDetectionCheckbox.isChecked();
 
                             DriveBuddyNotification notification = new DriveBuddyNotification("DriveBuddy",
                                     "DriveBuddy is working",
                                     R.drawable.ic_stat);
                             DriveBuddyConfiguration config = new DriveBuddyConfiguration("***sdk-key***",
                                     username,
-                                    automaticDriveRecognition,
+                                    drivingDetection,
                                     notification,
                                     firstName,
                                     surname,
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
             firstNameText.setVisibility(View.INVISIBLE);
             surnameText.setVisibility(View.INVISIBLE);
             mailText.setVisibility(View.INVISIBLE);
-            automaticDrivingDetectionCheckbox.setVisibility(View.INVISIBLE);
+            drivingDetectionCheckbox.setVisibility(View.INVISIBLE);
 
             setupButton.setVisibility(View.INVISIBLE);
             resetButton.setVisibility(View.VISIBLE);
