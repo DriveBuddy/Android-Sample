@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                         DriveBuddySharedPreferences.setString(context, "_firstName",firstNameText.getText().toString());
                         DriveBuddySharedPreferences.setString(context, "_surname",surnameText.getText().toString());
                         DriveBuddySharedPreferences.setString(context, "_mail",mailText.getText().toString());
-                        DriveBuddySharedPreferences.setBoolean(context, "_drivingDetection", automaticDrivingDetectionCheckbox.isChecked());
+                        DriveBuddySharedPreferences.setBoolean(context, "_drivingDetection", drivingDetectionCheckbox.isChecked());
                         DriveBuddySharedPreferences.setString(context, "_notificationTitle", "Drivebuddy");
                         DriveBuddySharedPreferences.setString(context, "_notificationContent", "DriveBuddy is Working");
                         DriveBuddySharedPreferences.setInt(context, "_notificationIcon", R.drawable.ic_stat);
