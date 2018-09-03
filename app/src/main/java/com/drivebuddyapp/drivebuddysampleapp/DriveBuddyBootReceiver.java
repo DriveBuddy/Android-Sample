@@ -19,7 +19,7 @@ public class DriveBuddyBootReceiver extends BroadcastReceiver {
                     Toast.makeText(context, "DriveBuddy - " + DriveBuddyError.getDefaultErrorMessage(errorCode), Toast.LENGTH_SHORT).show();
                 }
             };
-            DriveBuddy.setup(context, DriveBuddy.getCurrentConfiguration(context), callback);
+            DriveBuddyUtils.setup(context, callback);
         }
     }
 }
