@@ -11,19 +11,19 @@ public class DriveBuddyUtils {
     static void setup(Context context, DriveBuddyOperationalCallback callback){
 
         DriveBuddyNotification notification = new DriveBuddyNotification(
-                DriveBuddySharedPreferences.getString(context, "_notificationTitle"),
-                DriveBuddySharedPreferences.getString(context, "_notificationContent"),
-                DriveBuddySharedPreferences.getInt(context, "_notificationIcon")
+                DriveBuddySharedPreferences.getString(context, "notificationTitle"),
+                DriveBuddySharedPreferences.getString(context, "notificationContent"),
+                DriveBuddySharedPreferences.getInt(context, "notificationIcon")
         );
 
         DriveBuddyConfiguration config = new DriveBuddyConfiguration(
-                DriveBuddySharedPreferences.getString(context, "_sdk-key"),
-                DriveBuddySharedPreferences.getString(context, "_username"),
-                DriveBuddySharedPreferences.getBoolean(context, "_drivingDetection"),
+                DriveBuddySharedPreferences.getString(context, "sdk-key"),
+                DriveBuddySharedPreferences.getString(context, "username"),
+                DriveBuddySharedPreferences.getBoolean(context, "drivingDetection"),
                 notification,
-                DriveBuddySharedPreferences.getString(context, "_firstName"),
-                DriveBuddySharedPreferences.getString(context, "_surname"),
-                DriveBuddySharedPreferences.getString(context, "_mail")
+                DriveBuddySharedPreferences.getString(context, "firstName"),
+                DriveBuddySharedPreferences.getString(context, "surname"),
+                DriveBuddySharedPreferences.getString(context, "mail")
         );
 
         DriveBuddy.setup(context, config, callback);
