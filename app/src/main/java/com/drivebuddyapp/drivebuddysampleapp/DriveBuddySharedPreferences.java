@@ -16,7 +16,7 @@ public class DriveBuddySharedPreferences {
     static String getString(Context context, String key){
         context = context.getApplicationContext();
         SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(context);
-        return p.getString(key, "0");
+        return p.getString(key, "");
     }
 
     static void setBoolean(Context context, String key, boolean value){

@@ -39,6 +39,19 @@ public class MainActivity extends AppCompatActivity {
         final EditText surnameText = findViewById(R.id.surnameText);
         final EditText mailText = findViewById(R.id.mailText);
 
+        if(!DriveBuddySharedPreferences.getString(MainActivity.this, "username").isEmpty()){
+            usernameText.setText(DriveBuddySharedPreferences.getString(MainActivity.this, "username"));
+        }
+        if(!DriveBuddySharedPreferences.getString(MainActivity.this, "firstName").isEmpty()){
+            firstNameText.setText(DriveBuddySharedPreferences.getString(MainActivity.this, "firstName"));
+        }
+        if(!DriveBuddySharedPreferences.getString(MainActivity.this, "surname").isEmpty()){
+            surnameText.setText(DriveBuddySharedPreferences.getString(MainActivity.this, "surname"));
+        }
+        if(!DriveBuddySharedPreferences.getString(MainActivity.this, "mail").isEmpty()){
+            mailText.setText(DriveBuddySharedPreferences.getString(MainActivity.this, "mail"));
+        }
+
         final CheckBox drivingDetectionCheckbox = findViewById(R.id.drivingDetectionCheckbox);
         final ToggleButton toggleButton = findViewById(R.id.toggleButton);
         final Button setupButton = findViewById(R.id.setupButton);
