@@ -17,11 +17,8 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.drivebuddyapp.drivebuddysdk.DriveBuddy;
-import com.drivebuddyapp.drivebuddysdk.DriveBuddyConfiguration;
 import com.drivebuddyapp.drivebuddysdk.DriveBuddyError;
-import com.drivebuddyapp.drivebuddysdk.DriveBuddyNotification;
 import com.drivebuddyapp.drivebuddysdk.DriveBuddyOperationalCallback;
-import com.drivebuddyapp.drivebuddysdk.DriveBuddyTransitionReceiver;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -106,6 +103,22 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        final DriveBuddyOperationalCallback callbackForIsSdkSetup = new DriveBuddyOperationalCallback() {
+            @Override
+            public void onCompletion(boolean success, int errorCode) {
+                if (success) {
+                    usernameText.setVisibility(View.INVISIBLE);
+                    firstNameText.setVisibility(View.INVISIBLE);
+                    surnameText.setVisibility(View.INVISIBLE);
+                    mailText.setVisibility(View.INVISIBLE);
+                    drivingDetectionCheckbox.setVisibility(View.INVISIBLE);
+
+                    setupButton.setVisibility(View.INVISIBLE);
+                    resetButton.setVisibility(View.VISIBLE);
+                }
+            }
+        };
+
         // RESET BUTTON
 
         resetButton.setVisibility(View.INVISIBLE);
@@ -175,16 +188,7 @@ public class MainActivity extends AppCompatActivity {
 
         // IF IT'S ALREADY SET UP
 
-        if(DriveBuddy.isSdkSetup(MainActivity.this)) {
-            usernameText.setVisibility(View.INVISIBLE);
-            firstNameText.setVisibility(View.INVISIBLE);
-            surnameText.setVisibility(View.INVISIBLE);
-            mailText.setVisibility(View.INVISIBLE);
-            drivingDetectionCheckbox.setVisibility(View.INVISIBLE);
-
-            setupButton.setVisibility(View.INVISIBLE);
-            resetButton.setVisibility(View.VISIBLE);
-        }
+        DriveBuddy.isSdkSetup(MainActivity.this, callbackForIsSdkSetup);
 
         // LOCATION PERMISSION
 
