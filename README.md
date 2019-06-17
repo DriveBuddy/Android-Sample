@@ -8,16 +8,6 @@ To get your SDK key, you need to contact us via E-Mail. You can send a mail with
 
 ## Running Sample App
 
-All you need to do is get your SDK key as mentioned above, and then add your SDK key to line 151 in `MainActivity` where it writes `***sdk-key***`.
-
-```java
-DriveBuddyConfiguration config = new DriveBuddyConfiguration("***sdk-key***",  
-                                                              username,  
-                                                              drivingDetection,  
-                                                              notification,  
-                                                              firstName,  
-                                                              surname,  
-                                                              mail);
-```
+All you need to do is get your SDK key as mentioned above, and then add your SDK key to the project [here](/app/src/main/java/com/drivebuddyapp/drivebuddysampleapp/MainActivity.java).
 
 #### _For more information please visit [Android Docs](https://docs.drivebuddyapp.com/android/#introduction)._
