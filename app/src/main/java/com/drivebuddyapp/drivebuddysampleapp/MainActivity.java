@@ -8,6 +8,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -65,29 +66,37 @@ public class MainActivity extends AppCompatActivity {
 
         final DriveBuddyOperationalCallback callbackForSetup = new DriveBuddyOperationalCallback() {
             @Override
-            public void onCompletion(boolean success, int errorCode) {
+            public void onCompletion(boolean success, final int errorCode) {
                 if (success) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-                    alertDialog.setTitle("DriveBuddy");
-                    alertDialog.setMessage(DriveBuddyError.getDefaultErrorMessage(errorCode));
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    alertDialog.show();
-                    usernameText.setVisibility(View.INVISIBLE);
-                    firstNameText.setVisibility(View.INVISIBLE);
-                    surnameText.setVisibility(View.INVISIBLE);
-                    mailText.setVisibility(View.INVISIBLE);
-                    drivingDetectionCheckbox.setVisibility(View.INVISIBLE);
 
-                    setupButton.setVisibility(View.INVISIBLE);
-                    resetButton.setVisibility(View.VISIBLE);
-                    if (!DriveBuddy.getCurrentConfiguration(MainActivity.this).getDrivingDetection()) {
-                        toggleButton.setVisibility(View.VISIBLE);
-                    }
+                    runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                            alertDialog.setTitle("DriveBuddy");
+                            alertDialog.setMessage(DriveBuddyError.getDefaultErrorMessage(errorCode));
+                            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            alertDialog.show();
+                            usernameText.setVisibility(View.INVISIBLE);
+                            firstNameText.setVisibility(View.INVISIBLE);
+                            surnameText.setVisibility(View.INVISIBLE);
+                            mailText.setVisibility(View.INVISIBLE);
+                            drivingDetectionCheckbox.setVisibility(View.INVISIBLE);
+
+                            setupButton.setVisibility(View.INVISIBLE);
+                            resetButton.setVisibility(View.VISIBLE);
+                            if (!DriveBuddy.getCurrentConfiguration(MainActivity.this).getDrivingDetection()) {
+                                toggleButton.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    });
+
                 } else {
                     AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
                     alertDialog.setTitle("DriveBuddy");
