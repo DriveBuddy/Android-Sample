@@ -59,8 +59,12 @@ public class MainActivity extends AppCompatActivity {
 
         final DriveBuddyOperationalCallback callback = new DriveBuddyOperationalCallback() {
             @Override
-            public void onCompletion(boolean success, int errorCode) {
-                Toast.makeText(MainActivity.this, "DriveBuddy - " + DriveBuddyError.getDefaultErrorMessage(errorCode), Toast.LENGTH_SHORT).show();
+            public void onCompletion(final boolean success, final int errorCode) {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "DriveBuddy - " + DriveBuddyError.getDefaultErrorMessage(errorCode), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         };
 
@@ -98,16 +102,22 @@ public class MainActivity extends AppCompatActivity {
                     });
 
                 } else {
-                    AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-                    alertDialog.setTitle("DriveBuddy");
-                    alertDialog.setMessage(DriveBuddyError.getDefaultErrorMessage(errorCode));
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    alertDialog.show();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                            alertDialog.setTitle("DriveBuddy");
+                            alertDialog.setMessage(DriveBuddyError.getDefaultErrorMessage(errorCode));
+                            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            alertDialog.show();
+                        }
+                    });
+
                 }
             }
         };
