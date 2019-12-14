@@ -8,7 +8,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -30,37 +29,35 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // UI COMPONENTS
-
         final EditText usernameText = findViewById(R.id.usernameText);
         final EditText firstNameText = findViewById(R.id.firstNameText);
         final EditText surnameText = findViewById(R.id.surnameText);
         final EditText mailText = findViewById(R.id.mailText);
 
-        if(!DriveBuddySharedPreferences.getString(MainActivity.this, "username").isEmpty()){
+        if (!DriveBuddySharedPreferences.getString(MainActivity.this, "username").isEmpty()) {
             usernameText.setText(DriveBuddySharedPreferences.getString(MainActivity.this, "username"));
         }
-        if(!DriveBuddySharedPreferences.getString(MainActivity.this, "firstName").isEmpty()){
+        if (!DriveBuddySharedPreferences.getString(MainActivity.this, "firstName").isEmpty()) {
             firstNameText.setText(DriveBuddySharedPreferences.getString(MainActivity.this, "firstName"));
         }
-        if(!DriveBuddySharedPreferences.getString(MainActivity.this, "surname").isEmpty()){
+        if (!DriveBuddySharedPreferences.getString(MainActivity.this, "surname").isEmpty()) {
             surnameText.setText(DriveBuddySharedPreferences.getString(MainActivity.this, "surname"));
         }
-        if(!DriveBuddySharedPreferences.getString(MainActivity.this, "mail").isEmpty()){
+        if (!DriveBuddySharedPreferences.getString(MainActivity.this, "mail").isEmpty()) {
             mailText.setText(DriveBuddySharedPreferences.getString(MainActivity.this, "mail"));
         }
 
-        final CheckBox drivingDetectionCheckbox = findViewById(R.id.drivingDetectionCheckbox);
         final ToggleButton toggleButton = findViewById(R.id.toggleButton);
         final Button setupButton = findViewById(R.id.setupButton);
+        final CheckBox automaticDrivingDetectionCheckbox = findViewById(R.id.drivingDetectionCheckbox);
         final Button resetButton = findViewById(R.id.resetButton);
 
         // CALLBACKS
 
         final DriveBuddyOperationalCallback callback = new DriveBuddyOperationalCallback() {
             @Override
-            public void onCompletion(final boolean success, final int errorCode) {
-                runOnUiThread(new Runnable() {
+            public void onCompletion(boolean success, final int errorCode) {
+                MainActivity.this.runOnUiThread(new Runnable() {
                     public void run() {
                         Toast.makeText(MainActivity.this, "DriveBuddy - " + DriveBuddyError.getDefaultErrorMessage(errorCode), Toast.LENGTH_SHORT).show();
                     }
@@ -68,18 +65,31 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        final DriveBuddyOperationalCallback callbackForIsSdkSetup =     new DriveBuddyOperationalCallback() {
+            @Override
+            public void onCompletion(boolean success, int errorCode) {
+                if (success) {
+                    usernameText.setVisibility(View.INVISIBLE);
+                    firstNameText.setVisibility(View.INVISIBLE);
+                    surnameText.setVisibility(View.INVISIBLE);
+                    mailText.setVisibility(View.INVISIBLE);
+                    automaticDrivingDetectionCheckbox.setVisibility(View.INVISIBLE);
+
+                    setupButton.setVisibility(View.INVISIBLE);
+                    resetButton.setVisibility(View.VISIBLE);
+                }
+            }
+        };
+
         final DriveBuddyOperationalCallback callbackForSetup = new DriveBuddyOperationalCallback() {
             @Override
             public void onCompletion(boolean success, final int errorCode) {
                 if (success) {
-
-                    runOnUiThread(new Runnable() {
-
-                        @Override
+                    MainActivity.this.runOnUiThread(new Runnable() {
                         public void run() {
                             AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
                             alertDialog.setTitle("DriveBuddy");
-                            alertDialog.setMessage(DriveBuddyError.getDefaultErrorMessage(errorCode));
+                            alertDialog.setMessage("Setup has completed successfully.");
                             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
@@ -91,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                             firstNameText.setVisibility(View.INVISIBLE);
                             surnameText.setVisibility(View.INVISIBLE);
                             mailText.setVisibility(View.INVISIBLE);
-                            drivingDetectionCheckbox.setVisibility(View.INVISIBLE);
+                            automaticDrivingDetectionCheckbox.setVisibility(View.INVISIBLE);
 
                             setupButton.setVisibility(View.INVISIBLE);
                             resetButton.setVisibility(View.VISIBLE);
@@ -100,16 +110,17 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     });
-
                 } else {
-                    runOnUiThread(new Runnable() {
-                        @Override
+                    MainActivity.this.runOnUiThread(new Runnable() {
                         public void run() {
                             AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
                             alertDialog.setTitle("DriveBuddy");
-                            alertDialog.setMessage(DriveBuddyError.getDefaultErrorMessage(errorCode));
+                            String message = "Setup has failed," + DriveBuddyError.getDefaultErrorMessage(errorCode);
+                            alertDialog.setMessage(message);
                             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                    new DialogInterface.OnClickListener() {
+                                    new DialogInterface.OnClickListener()
+
+                                    {
                                         public void onClick(DialogInterface dialog, int which) {
                                             dialog.dismiss();
                                         }
@@ -117,23 +128,6 @@ public class MainActivity extends AppCompatActivity {
                             alertDialog.show();
                         }
                     });
-
-                }
-            }
-        };
-
-        final DriveBuddyOperationalCallback callbackForIsSdkSetup = new DriveBuddyOperationalCallback() {
-            @Override
-            public void onCompletion(boolean success, int errorCode) {
-                if (success) {
-                    usernameText.setVisibility(View.INVISIBLE);
-                    firstNameText.setVisibility(View.INVISIBLE);
-                    surnameText.setVisibility(View.INVISIBLE);
-                    mailText.setVisibility(View.INVISIBLE);
-                    drivingDetectionCheckbox.setVisibility(View.INVISIBLE);
-
-                    setupButton.setVisibility(View.INVISIBLE);
-                    resetButton.setVisibility(View.VISIBLE);
                 }
             }
         };
@@ -154,16 +148,15 @@ public class MainActivity extends AppCompatActivity {
 
         // TOGGLE DRIVE BUTTON
 
-        if(DriveBuddy.getCurrentConfiguration(MainActivity.this).getDrivingDetection()){
+        if (DriveBuddy.getCurrentConfiguration(MainActivity.this).getDrivingDetection()) {
             toggleButton.setVisibility(View.INVISIBLE);
         }
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     DriveBuddy.startDrive(MainActivity.this, callback);
-                }
-                else{
+                } else {
                     DriveBuddy.stopDrive(MainActivity.this, callback);
                 }
             }
@@ -171,23 +164,25 @@ public class MainActivity extends AppCompatActivity {
 
         // SETUP BUTTON
 
-        drivingDetectionCheckbox.setChecked(true); // Default: drivingDetection is on
+        automaticDrivingDetectionCheckbox.setChecked(true); // Default: Automatic Drive Recognition is on
         setupButton.setOnClickListener(
                 new View.OnClickListener() {
                     public void onClick(View view) {
                         Context context = MainActivity.this;
                         String username = usernameText.getText().toString();
-                        DriveBuddySharedPreferences.setString(context, "sdk-key",DRIVE_BUDDY_SDK_KEY);
-                        DriveBuddySharedPreferences.setString(context, "username",usernameText.getText().toString());
-                        DriveBuddySharedPreferences.setString(context, "firstName",firstNameText.getText().toString());
-                        DriveBuddySharedPreferences.setString(context, "surname",surnameText.getText().toString());
-                        DriveBuddySharedPreferences.setString(context, "mail",mailText.getText().toString());
-                        DriveBuddySharedPreferences.setBoolean(context, "drivingDetection", drivingDetectionCheckbox.isChecked());
+                        DriveBuddySharedPreferences.setString(context, "username", usernameText.getText().toString());
+                        DriveBuddySharedPreferences.setString(context, "firstName", firstNameText.getText().toString());
+                        DriveBuddySharedPreferences.setString(context, "surname", surnameText.getText().toString());
+                        DriveBuddySharedPreferences.setString(context, "mail", mailText.getText().toString());
+                        DriveBuddySharedPreferences.setString(context, "sdk-key", DRIVE_BUDDY_SDK_KEY);
+                        DriveBuddySharedPreferences.setBoolean(context, "drivingDetection", automaticDrivingDetectionCheckbox.isChecked());
                         DriveBuddySharedPreferences.setString(context, "notificationTitle", "Drivebuddy");
                         DriveBuddySharedPreferences.setString(context, "notificationContent", "DriveBuddy is Working");
                         DriveBuddySharedPreferences.setInt(context, "notificationIcon", R.drawable.ic_stat);
 
-                        if(username.matches("") || username.isEmpty()){
+                        DriveBuddySharedPreferences.setString(context, "driverId", "205");
+
+                        if (username.matches("") || username.isEmpty()) {
                             AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
                             alertDialog.setTitle("DriveBuddy");
                             alertDialog.setMessage("Username field cannot be empty!");
@@ -198,16 +193,14 @@ public class MainActivity extends AppCompatActivity {
                                         }
                                     });
                             alertDialog.show();
-                        }
-                        else {
+                        } else {
                             DriveBuddyUtils.setup(context, callbackForSetup);
                         }
                     }
                 });
 
-        // IF IT'S ALREADY SET UP
-
         DriveBuddy.isSdkSetup(MainActivity.this, callbackForIsSdkSetup);
+
 
         // LOCATION PERMISSION
 
